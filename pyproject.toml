@@ -1,0 +1,40 @@
+[project]
+name = "task-17-basic-application-dwr"
+version = "0.1.0"
+description = "Weather notification in the subscribed city via email, webhook"
+readme = "README.md"
+requires-python = ">=3.11.6"
+dependencies = [
+    "django>=5.2.6",
+    "psycopg2-binary>=2.9.10",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+    "ruff>=0.13.2",
+]
+
+# Ruff settings
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["F401"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "tab"
+
+[tool.ruff]
+line-length = 80
+target-version = "py311"
+exclude = [
+    ".venv",
+    ".git",
+    ".pytest_cache",
+    ".ruff_cache",
+    "uv.lock",
+    ".python-version",
+    ".gitignore",
+    ".dockerignore",
+    "requirements.txt",
+]
