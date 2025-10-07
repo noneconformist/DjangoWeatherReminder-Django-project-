@@ -2,6 +2,7 @@ image: python:3.11
 
 stages:
   - lint
+  - test
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
@@ -15,10 +16,19 @@ before_script:
   - uv pip install --system django psycopg
   - pip install pre-commit ruff
 
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev")'
+
 lint:
   stage: lint
   script:
     - pre-commit run --all-files
   allow_failure: false
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev")'
+
+test:
+  stage: test
+  script:
+    - pip install pytest
+    - pytest
+  allow_failure: false
