@@ -1,0 +1,21 @@
+image: python:3.11
+
+stages:
+  - lint
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+before_script:
+  - pip install uv
+  - uv pip install -e .[dev]
+
+lint:
+  stage: lint
+  script:
+    - pre-commit run --all-files
+  allow_failure: false
