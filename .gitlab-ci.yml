@@ -19,3 +19,6 @@ lint:
   script:
     - pre-commit run --all-files
   allow_failure: false
+
+rules:
+  - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev")'
