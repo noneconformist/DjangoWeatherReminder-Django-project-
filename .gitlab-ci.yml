@@ -12,7 +12,8 @@ cache:
 
 before_script:
   - pip install uv
-  - uv pip install -e .[dev] --system
+  - uv pip install --system django psycopg
+  - pip install pre-commit ruff
 
 lint:
   stage: lint
