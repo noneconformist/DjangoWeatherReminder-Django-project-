@@ -23,7 +23,6 @@ ignore = ["F401"]
 [tool.ruff.format]
 indent-style = "space"
 quote-style = "single"
-indent-style = "tab"
 
 [tool.ruff]
 line-length = 100
