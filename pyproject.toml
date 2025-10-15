@@ -38,3 +38,4 @@ exclude = [
     ".dockerignore",
     "requirements.txt",
 ]
+extend-exclude = ["migrations"]
