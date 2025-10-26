@@ -3,12 +3,13 @@ name = "task-17-basic-application-dwr"
 version = "0.1.0"
 description = "Weather notification in the subscribed city via email, webhook"
 readme = "README.md"
-requires-python = ">=3.11.6"
+requires-python = "==3.11.6"
 dependencies = [
     "django>=5.2.6",
-    "psycopg>=3.2.1",
+    "psycopg[binary]>=3.2.1",
     "python-dotenv>=1.1.1",
     "gunicorn>=23.0.0",
+    "psycopg-binary==3.2.12",
 ]
 
 [dependency-groups]
