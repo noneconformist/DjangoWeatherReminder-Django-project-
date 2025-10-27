@@ -24,6 +24,8 @@ cache:
 
 before_script:
   - apk add --no-cache py3-pip python3-dev build-base
+  - python3 -m venv .venv
+  - . .venv/bin/activate
   - pip install uv
   - uv pip install --system --dependency-group dev
 
