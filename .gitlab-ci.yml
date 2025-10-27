@@ -1,20 +1,31 @@
-image: python:3.11
+image: docker:27-cli
+
+services:
+  - docker:27-dind
 
 stages:
   - lint
   - test
 
 variables:
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_TLS_CERTDIR: ""
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  POSTGRES_DB: docker_db
+  POSTGRES_USER: docker_user
+  POSTGRES_PASSWORD: docker_password
+  POSTGRES_PORT_HOST: 5433
+  STATIC: /home/docker_user/app/staticfiles
+  PG_DATA: /var/lib/postgresql/data
 
 cache:
   paths:
     - .cache/pip
 
 before_script:
+  - apk add --no-cache py3-pip python3-dev build-base
   - pip install uv
-  - uv pip install --system django psycopg
-  - pip install pre-commit ruff
+  - uv pip install --system --dependency-group dev
 
 workflow:
   rules:
@@ -29,6 +40,5 @@ lint:
 test:
   stage: test
   script:
-    - pip install pytest
-    - pytest || echo "No tests found"
+    - docker compose -f docker-compose.yml up --build --abort-on-container-exit test
   allow_failure: false
