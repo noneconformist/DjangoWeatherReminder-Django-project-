@@ -27,7 +27,7 @@ before_script:
   - python3 -m venv .venv
   - . .venv/bin/activate
   - pip install uv
-  - uv pip install --system --group dev
+  - uv pip install --group dev
 
 workflow:
   rules:
