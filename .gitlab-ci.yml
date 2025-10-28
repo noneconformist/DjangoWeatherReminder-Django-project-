@@ -42,6 +42,8 @@ workflow:
 lint:
   stage: lint
   script:
+    - ruff check .
+    - ruff format --check .
     - pre-commit run --all-files
   allow_failure: false
 
