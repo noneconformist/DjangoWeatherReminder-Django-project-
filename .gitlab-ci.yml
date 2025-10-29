@@ -34,6 +34,7 @@ before_script:
   - echo "POSTGRES_PORT_HOST=5433" >> .env
   - echo "STATIC=/home/docker_user/app/staticfiles" >> .env
   - echo "PG_DATA=/var/lib/postgresql/data" >> .env
+  - echo "SECRET_KEY=dev-secret-key-for-ci" >> .env
 
 workflow:
   rules:
