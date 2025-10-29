@@ -10,7 +10,7 @@ def test_register_and_get_jwt_token():
     client = APIClient()
 
     # 1. Registration
-    register_url = reverse('api_register')
+    register_url = reverse('register')
     user_data = {
         'username': 'anton',
         'email': 'anton@example.com',
