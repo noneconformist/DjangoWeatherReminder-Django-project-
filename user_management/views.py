@@ -2,8 +2,11 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from rest_framework import generics
 
 from .forms import CustomUserChangeForm, CustomUserCreationForm
+from .models import CustomUser
+from .serializers import RegisterSerializer
 
 
 def index(request):
@@ -33,3 +36,8 @@ def profile(request):
         form = CustomUserChangeForm(instance=request.user)
 
     return render(request, 'users/profile.html', {'form': form})
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = RegisterSerializer
