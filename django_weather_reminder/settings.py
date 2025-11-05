@@ -38,7 +38,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'weatherrest_framework',
+    'weather',
+    'rest_framework',
     'rest_framework_simplejwt',
     'user_management.apps.UserManagementConfig',
     'django.contrib.admin',
