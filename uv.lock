@@ -229,6 +229,9 @@ wheels = [
 binary = [
     { name = "psycopg-binary", marker = "implementation_name != 'pypy'" },
 ]
+pool = [
+    { name = "psycopg-pool" },
+]
 
 [[package]]
 name = "psycopg-binary"
@@ -244,6 +247,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cb/29/0d0d2aa4238fd57ddbd2f517c58cefb26d408d3e989cbca9ad43f4c48433/psycopg_binary-3.2.12-cp311-cp311-musllinux_1_2_ppc64le.whl", hash = "sha256:100fdfee763d701f6da694bde711e264aca4c2bc84fb81e1669fb491ce11d219", size = 3571385, upload-time = "2025-10-26T00:19:56.844Z" },
     { url = "https://files.pythonhosted.org/packages/b1/7d/eb11cd86339122c19c1039cb5ee5f87f88d6015dff564b1ed23d0c4a90e7/psycopg_binary-3.2.12-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:802bd01fb18a0acb0dea491f69a9a2da6034f33329a62876ab5b558a1fb66b45", size = 3614219, upload-time = "2025-10-26T00:20:27.135Z" },
     { url = "https://files.pythonhosted.org/packages/65/02/dff51dc1f88d9854405013e2cabbf7060c2b3993cb82d6e8ad21396081af/psycopg_binary-3.2.12-cp311-cp311-win_amd64.whl", hash = "sha256:f33c9e12ed05e579b7fb3c8fdb10a165f41459394b8eb113e7c377b2bd027f61", size = 2919778, upload-time = "2025-10-26T00:20:51.974Z" },
+]
+
+[[package]]
+name = "psycopg-pool"
+version = "3.2.7"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9d/8f/3ec52b17087c2ed5fa32b64fd4814dde964c9aa4bd49d0d30fc24725ca6d/psycopg_pool-3.2.7.tar.gz", hash = "sha256:a77d531bfca238e49e5fb5832d65b98e69f2c62bfda3d2d4d833696bdc9ca54b", size = 29765, upload-time = "2025-10-26T00:46:10.379Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e7/59/74e752f605c6f0e351d4cf1c54fb9a1616dc800db4572b95bbfbb1a6225f/psycopg_pool-3.2.7-py3-none-any.whl", hash = "sha256:4b47bb59d887ef5da522eb63746b9f70e2faf967d34aac4f56ffc65e9606728f", size = 38232, upload-time = "2025-10-26T00:46:00.496Z" },
 ]
 
 [[package]]
@@ -377,7 +392,7 @@ dependencies = [
     { name = "djangorestframework" },
     { name = "djangorestframework-simplejwt" },
     { name = "gunicorn" },
-    { name = "psycopg", extra = ["binary"] },
+    { name = "psycopg", extra = ["binary", "pool"] },
     { name = "psycopg-binary" },
     { name = "python-dotenv" },
     { name = "requests" },
@@ -397,7 +412,7 @@ requires-dist = [
     { name = "djangorestframework", specifier = "==3.16.1" },
     { name = "djangorestframework-simplejwt", specifier = "==5.5.1" },
     { name = "gunicorn", specifier = ">=23.0.0" },
-    { name = "psycopg", extras = ["binary"], specifier = ">=3.2.1" },
+    { name = "psycopg", extras = ["binary", "pool"], specifier = ">=3.2.1" },
     { name = "psycopg-binary", specifier = "==3.2.12" },
     { name = "python-dotenv", specifier = ">=1.2.1" },
     { name = "requests", specifier = ">=2.32.5" },
