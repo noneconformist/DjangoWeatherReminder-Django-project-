@@ -1,10 +1,11 @@
+from django.conf import settings
 from rest_framework import generics, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import City, Subscription
-from .openweather import get_weather
+from .openweather import OpenWeatherClient
 from .serializers import CitySerializer, SubscriptionSerializer
 
 
@@ -37,7 +38,8 @@ def weather_by_city(request):
     if not city:
         return Response({'error': 'City parameter is required'}, status=400)
     try:
-        data = get_weather(city)
+        client = OpenWeatherClient(settings.OPENWEATHER_API_KEY)
+        data = client.get_weather(city)
         return Response(data)
     except Exception as e:
         return Response({'error': str(e)}, status=500)

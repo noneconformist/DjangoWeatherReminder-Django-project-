@@ -1,21 +1,26 @@
 from datetime import timedelta
 
 import requests
-from django.conf import settings
 from django.utils import timezone
 
-OPENWEATHER_API_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
+class OpenWeatherClient:
+    OPENWEATHER_API_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
-def get_weather(city_name):
-    params = {
-        'q': city_name,
-        'appid': settings.OPENWEATHER_API_KEY,
-        'units': 'metric',
-    }
-    response = requests.get(OPENWEATHER_API_URL, params=params)
-    if response.status_code == 200:
+    def __init__(self, api_key):
+        self.api_key = api_key
+        self.session = requests.Session()
+
+    def get_weather(self, city_name):
+        params = {
+            'q': city_name,
+            'appid': self.api_key,
+            'units': 'metric',
+        }
+        response = self.session.get(self.OPENWEATHER_API_URL, params=params)
+        response.raise_for_status()
         data = response.json()
+
         timestamp = timezone.now()
         expired_at = timestamp + timedelta(hours=1)
 
@@ -28,5 +33,3 @@ def get_weather(city_name):
             'timestamp': timestamp.isoformat(),
             'expired_at': expired_at.isoformat(),
         }
-    else:
-        raise Exception(f'Weather API error: {response.status_code} → {response.text}')
