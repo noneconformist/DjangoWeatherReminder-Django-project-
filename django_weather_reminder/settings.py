@@ -91,6 +91,9 @@ DATABASES = {
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': 'db',
         'PORT': '5432',
+        'OPTIONS': {
+            'pool': True,
+        },
     }
 }
 
@@ -144,3 +147,5 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+
+OPENWEATHER_API_KEY = os.getenv('API_OPEN_WEATHER_KEY')

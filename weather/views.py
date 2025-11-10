@@ -1,6 +1,11 @@
+from django.conf import settings
 from rest_framework import generics, permissions
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from .models import City, Subscription
+from .openweather import OpenWeatherClient
 from .serializers import CitySerializer, SubscriptionSerializer
 
 
@@ -24,3 +29,17 @@ class SubscriptionDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Subscription.objects.filter(user=self.request.user)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def weather_by_city(request):
+    city = request.query_params.get('city')
+    if not city:
+        return Response({'error': 'City parameter is required'}, status=400)
+    try:
+        client = OpenWeatherClient(settings.OPENWEATHER_API_KEY)
+        data = client.get_weather(city)
+        return Response(data)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
