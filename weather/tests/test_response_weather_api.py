@@ -6,7 +6,7 @@ from rest_framework.test import APIClient
 def test_weather_api():
     client = APIClient()
 
-    # Регистрация
+    # Registration
     register_data = {
         'username': 'anton',
         'email': 'anton@example.com',
@@ -16,13 +16,13 @@ def test_weather_api():
     }
     client.post('/register/', register_data, format='json')
 
-    # Получение токена
+    # Obtaining a token
     token_response = client.post(
         '/token/', {'username': 'anton', 'password': 'securepassword123'}, format='json'
     )
     access_token = token_response.data['access']
 
-    # Запрос к API
+    # API request
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
     response = client.get('/api/weather/?city=Tokyo')
 
