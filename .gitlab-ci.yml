@@ -35,7 +35,7 @@ before_script:
   - echo "STATIC=/home/docker_user/app/staticfiles" >> .env
   - echo "PG_DATA=/var/lib/postgresql/data" >> .env
   - echo "SECRET_KEY=dev-secret-key-for-ci" >> .env
-  - echo "API_OPEN_WEATHER_KEY=dev-api-open-weather-key-for-ci" >> .env
+  - echo "API_OPEN_WEATHER_KEY=575a31d8f2ee72ba92af623a1617033c" >> .env
 
 workflow:
   rules:
