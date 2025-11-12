@@ -10,12 +10,16 @@ services:
     depends_on:
       db:
         condition: service_healthy # Wait until db becomes "healthy"
+      redis:
+        condition: service_started
     command: >
           sh -c "mkdir -p ${STATIC} &&
                  python3.11 manage.py makemigrations --no-input &&
                  python3.11 manage.py migrate --no-input &&
                  python3.11 manage.py collectstatic --no-input &&
                  gunicorn --bind 0.0.0.0:8080 django_weather_reminder.wsgi:application"
+                 celery -A django_weather_reminder worker -l info &
+                 celery -A django_weather_reminder beat -l info"
 
 
   db:
