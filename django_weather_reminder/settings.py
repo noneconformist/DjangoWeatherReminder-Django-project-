@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+from celery.schedules import crontab
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -148,4 +149,20 @@ REST_FRAMEWORK = {
     ),
 }
 
+# openweathermap.org API key
 OPENWEATHER_API_KEY = os.getenv('API_OPEN_WEATHER_KEY')
+
+# Configure Celery
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+
+CELERY_BEAT_SCHEDULE = {
+    'check-subscriptions-every-hour': {
+        'task': 'weather.tasks.schedule_weather_notifications',
+        'schedule': crontab(minute=0, hour='*'),  # Launch every hour
+    },
+}
+
+# Email settings for development
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@example.com'
