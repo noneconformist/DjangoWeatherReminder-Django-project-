@@ -162,3 +162,7 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute=0, hour='*'),  # Launch every hour
     },
 }
+
+# Email settings for development
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@example.com'
