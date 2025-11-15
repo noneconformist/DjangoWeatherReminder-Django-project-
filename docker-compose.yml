@@ -68,6 +68,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     command: >
       sh -c "python3.11 manage.py migrate --no-input &&
              pytest --disable-warnings --maxfail=1"
