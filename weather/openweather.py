@@ -9,7 +9,7 @@ from django.utils import timezone
 class OpenWeatherClient:
     OPENWEATHER_API_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
-    def __init__(self, api_key, redis_url='redis://127.0.0.1:6379/1'):
+    def __init__(self, api_key, redis_url='redis://redis:6379/1'):
         self.api_key = api_key
         self.session = requests.Session()
         self.redis = redis.Redis.from_url(redis_url)
