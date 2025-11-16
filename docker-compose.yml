@@ -17,10 +17,29 @@ services:
                  python3.11 manage.py makemigrations --no-input &&
                  python3.11 manage.py migrate --no-input &&
                  python3.11 manage.py collectstatic --no-input &&
-                 gunicorn --bind 0.0.0.0:8080 django_weather_reminder.wsgi:application
-                 celery -A django_weather_reminder worker -l info &
-                 celery -A django_weather_reminder beat -l info"
+                 gunicorn --bind 0.0.0.0:8080 django_weather_reminder.wsgi:application"
 
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - app
+      - redis
+    command: celery -A django_weather_reminder worker -l info
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - app
+      - redis
+    command: celery -A django_weather_reminder beat -l info
 
   db:
     image: postgres:15
