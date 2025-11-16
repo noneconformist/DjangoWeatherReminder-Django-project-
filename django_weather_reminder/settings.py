@@ -156,13 +156,6 @@ OPENWEATHER_API_KEY = os.getenv('API_OPEN_WEATHER_KEY')
 CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
-CELERY_BEAT_SCHEDULE = {
-    'check-subscriptions-every-hour': {
-        'task': 'weather.tasks.schedule_weather_notifications',
-        'schedule': crontab(minute=0, hour='*'),  # Launch every hour
-    },
-}
-
 # Email settings for development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@example.com'
