@@ -29,7 +29,7 @@ COPY pyproject.toml uv.lock ./
 
 # Install dependencies using uv
 RUN python3.11 -m uv pip install --system --requirements pyproject.toml && \
-    python3.11 -m uv pip install --system pytest pytest-django
+    python3.11 -m uv pip install --system pytest pytest-django pytest-mock
 
 # Copying the entire project
 COPY . .
