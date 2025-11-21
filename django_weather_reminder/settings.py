@@ -160,3 +160,7 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 # Email settings for development
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@example.com'
+
+# Configure SendPulse
+SENDPULSE_API_ID = os.getenv('SENDPULSE_API_ID')
+SENDPULSE_API_SECRET = os.getenv('SENDPULSE_API_SECRET')
