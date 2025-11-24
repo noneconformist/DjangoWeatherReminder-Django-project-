@@ -5,6 +5,7 @@ from django.utils import timezone
 
 from .models import Subscription
 from .openweather import OpenWeatherClient
+from .sendpulse import SendPulseClient
 
 
 @shared_task
@@ -59,3 +60,10 @@ def schedule_weather_notifications():
             sent_count += 1
 
     return f'Scheduled {sent_count} notifications at {now.isoformat()}'
+
+
+@shared_task
+def add_user_to_sendpulse(book_id, emails):
+    client = SendPulseClient()
+    result = client.add_email(book_id, emails)
+    return result
