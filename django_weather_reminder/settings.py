@@ -162,5 +162,5 @@ EMAIL_BACKEND = 'django_weather_reminder.backends.sendpulse.SendPulseEmailBacken
 DEFAULT_FROM_EMAIL = 'noreply@django_weather_reminder.com'
 
 # Configure SendPulse
-SENDPULSE_API_ID = os.getenv('SENDPULSE_API_ID')
-SENDPULSE_API_SECRET = os.getenv('SENDPULSE_API_SECRET')
+SENDPULSE_API_ID = os.getenv('SENDPULSE_API_ID', 'test-api-id')
+SENDPULSE_API_SECRET = os.getenv('SENDPULSE_API_SECRET', 'test-api-secret')
