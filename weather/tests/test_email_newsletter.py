@@ -9,6 +9,8 @@ def test_send_weather_email_task(subscription_with_user_and_city, settings, monk
     # Using a test email backend
     settings.EMAIL_BACKEND = 'django_weather_reminder.backends.SendPulseEmailBackend'
     settings.DEFAULT_FROM_EMAIL = 'test@django_weather_reminder.com'
+    settings.SENDPULSE_API_ID = 'fake-id'
+    settings.SENDPULSE_API_SECRET = 'fake-secret'
 
     called = {}
 
