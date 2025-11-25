@@ -15,3 +15,6 @@ class SendPulseClient:
     def add_email(self, book_id, emails):
         # Many emails
         return self.sp.add_email_to_addressbook(book_id=book_id, emails=emails)
+
+    def send_email(self, payload):
+        return self.sp.smtp_send_mail(payload)
