@@ -158,8 +158,8 @@ CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 # Email settings for development
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'noreply@example.com'
+EMAIL_BACKEND = 'django_weather_reminder.backends.sendpulse.SendPulseEmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@django_weather_reminder.com'
 
 # Configure SendPulse
 SENDPULSE_API_ID = os.getenv('SENDPULSE_API_ID')
