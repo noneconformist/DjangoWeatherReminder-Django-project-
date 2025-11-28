@@ -40,6 +40,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'weather',
+    'drf_yasg',
     'rest_framework',
     'rest_framework_simplejwt',
     'user_management.apps.UserManagementConfig',
