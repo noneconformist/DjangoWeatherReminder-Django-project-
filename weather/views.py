@@ -57,12 +57,6 @@ def subscription_list_create(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-# class SubscriptionDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     serializer_class = SubscriptionSerializer
-#     permission_classes = [permissions.IsAuthenticated]
-#
-#     def get_queryset(self):
-#         return Subscription.objects.filter(user=self.request.user)
 class SubscriptionDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SubscriptionSerializer
     permission_classes = [IsAuthenticated]
