@@ -39,6 +39,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'ui_app.apps.UiAppConfig',
     'weather',
     'drf_yasg',
     'rest_framework',
