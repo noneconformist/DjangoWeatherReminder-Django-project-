@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
+      - .:/home/docker_user/app
       - static_volume:${STATIC}
     env_file:
       - .env
