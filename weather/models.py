@@ -1,11 +1,10 @@
 import json
 
+from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django_celery_beat.models import IntervalSchedule, PeriodicTask
-
-from user_management.models import CustomUser
 
 
 class City(models.Model):
@@ -25,7 +24,9 @@ class Subscription(models.Model):
     ]
 
     subscription_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='subscriptions')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='subscriptions'
+    )
     city = models.ForeignKey(City, on_delete=models.CASCADE, related_name='subscriptions')
     notification_period = models.IntegerField(choices=PERIOD_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
