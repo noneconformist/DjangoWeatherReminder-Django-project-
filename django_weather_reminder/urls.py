@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('user_management.urls')),
     path('api/weather/', include('weather.urls')),
+    path('subscriptions/', include('ui_app.urls')),
     re_path(
         r'^swagger(?P<format>\.json|\.yaml)$',
         schema_view.without_ui(cache_timeout=0),

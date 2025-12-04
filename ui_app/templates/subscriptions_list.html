@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Subscriptions</h2>
+
+{% if subscriptions %}
+    <table>
+        <thead>
+            <tr>
+                <th>City</th>
+                <th>Interval (hours)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sub in subscriptions %}
+                <tr>
+                    <td>{{ sub.city }}</td>
+                    <td>{{ sub.interval }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>You don't have any subscriptions yet.</p>
+{% endif %}
+
+<p><a href="{% url 'subscription_add' %}">Add new subscription</a></p>
+<p><a href="{% url 'subscription_delete' %}">Delete subscription</a></p>
+<p><a href="{% url 'profile' %}">Profile</a></p>
+<p><a href="{% url 'index' %}">Back to home page</a></p>
+
+{% endblock content %}

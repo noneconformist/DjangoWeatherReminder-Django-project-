@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Profile</h2>
+    Hello, {{ user.username|default:"Guest" }}!
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+
+    <hr />
+    <p><strong>Date joined:</strong> {{ user.date_joined }}</p>
+    <p><strong>Last login:</strong> {{ user.last_login }}</p>
+    <p>
+        <a href="{% url 'index' %}">Back to home page</a>
+    </p>
+    {% include "registration/_logout.html" %}
+{% endblock content %}

@@ -19,7 +19,7 @@ def sign_up(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect(reverse('dashboard'))
+            return redirect(reverse('index'))
     else:
         form = CustomUserCreationForm()
     return render(request, 'registration/sign_up.html', {'form': form})

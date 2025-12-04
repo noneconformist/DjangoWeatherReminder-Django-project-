@@ -33,12 +33,18 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     'galkin.space',
     'www.galkin.space',
+    'localhost',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+]
 
 # Application definition
 
 INSTALLED_APPS = [
+    'ui_app.apps.UiAppConfig',
     'weather',
     'drf_yasg',
     'rest_framework',
