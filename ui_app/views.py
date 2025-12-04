@@ -1,3 +1,5 @@
+import requests
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
@@ -16,10 +18,19 @@ def subscription_add(request):
     if request.method == 'POST':
         form = SubscriptionForm(request.POST)
         if form.is_valid():
-            sub = form.save(commit=False)
-            sub.user = request.user
-            sub.save()
-            return redirect('subscriptions_list')
+            city = form.cleaned_data['city']
+            # Checking the city via OpenWeather
+            api_key = settings.OPENWEATHER_API_KEY
+            url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}'
+            response = requests.get(url)
+
+            if response.status_code == 200:
+                sub = form.save(commit=False)
+                sub.user = request.user
+                sub.save()
+                return redirect('subscriptions_list')
+            else:
+                form.add_error('city', 'Invalid city name for OpenWeather')
     else:
         form = SubscriptionForm()
     return render(request, 'subscription_add.html', {'form': form})
