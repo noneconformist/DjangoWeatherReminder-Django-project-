@@ -151,6 +151,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'user_management.CustomUser'
 
+API_BASE_URL = 'http://127.0.0.1:8080'
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -165,9 +167,17 @@ CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 # Email settings for development
-EMAIL_BACKEND = 'django_weather_reminder.backends.sendpulse.SendPulseEmailBackend'
+EMAIL_BACKEND = 'django_weather_reminder.backends.SendPulseEmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@django_weather_reminder.com'
 
 # Configure SendPulse
 SENDPULSE_API_ID = os.getenv('SENDPULSE_API_ID')
 SENDPULSE_API_SECRET = os.getenv('SENDPULSE_API_SECRET')
+
+
+CELERY_BEAT_SCHEDULE = {
+    'check-weather-subscriptions': {
+        'task': 'weather.tasks.schedule_weather_notifications',
+        'schedule': crontab(minute='*/10'),  # Checking every 10 minutes
+    },
+}

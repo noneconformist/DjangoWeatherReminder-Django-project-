@@ -1,10 +1,21 @@
+import os
+
 from django.conf import settings
 from pysendpulse.pysendpulse import PySendPulse
 
 
 class SendPulseClient:
     def __init__(self):
-        self.sp = PySendPulse(settings.SENDPULSE_API_ID, settings.SENDPULSE_API_SECRET, 'redis')
+        token_dir = '/tmp/sendpulse_token_dir'
+        os.makedirs(token_dir, exist_ok=True)
+        token_file_path = os.path.join(token_dir, 'token_file')
+
+        self.sp = PySendPulse(
+            settings.SENDPULSE_API_ID,
+            settings.SENDPULSE_API_SECRET,
+            'FILE',
+            token_file_path,
+        )
 
     def create_list(self, name):
         try:

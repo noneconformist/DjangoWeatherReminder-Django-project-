@@ -13,15 +13,14 @@ class SendPulseEmailBackend(BaseEmailBackend):
 
         for message in email_messages:
             payload = {
-                'email': {
-                    'subject': message.subject,
-                    'text': message.body,
-                    'from': {
-                        'name': 'MyApp',
-                        'email': message.from_email,
-                    },
-                    'to': [{'email': addr} for addr in message.to],
-                }
+                'html': message.body.replace('\n', '<br>'),
+                'text': message.body,
+                'subject': message.subject,
+                'from': {
+                    'name': 'Django Weather Reminder',
+                    'email': message.from_email or 'mogaxev854@kudimi.com',
+                },
+                'to': [{'name': addr.split('@')[0], 'email': addr} for addr in message.to],
             }
 
             try:
