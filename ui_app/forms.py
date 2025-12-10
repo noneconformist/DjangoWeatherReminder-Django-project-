@@ -17,7 +17,7 @@ class SubscriptionForm(forms.ModelForm):
         widgets = {
             'notification_period': forms.Select(
                 choices=[
-                    (1, 'Every a hour'),
+                    (1, 'Every hour'),
                     (3, 'Every 3 hours'),
                     (6, 'Every 6 hours'),
                 ]
