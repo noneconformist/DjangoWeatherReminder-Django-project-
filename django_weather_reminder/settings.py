@@ -167,12 +167,15 @@ CELERY_BROKER_URL = 'redis://redis:6379/0'
 CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 # Email settings for development
-EMAIL_BACKEND = 'django_weather_reminder.backends.SendPulseEmailBackend'
-DEFAULT_FROM_EMAIL = 'noreply@django_weather_reminder.com'
+EMAIL_BACKEND = 'django_weather_reminder.backends.GmailSMTPBackend'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+DEFAULT_FROM_EMAIL = f'Weather Reminder <{os.getenv("EMAIL_HOST_USER")}>'
 
-# Configure SendPulse
-SENDPULSE_API_ID = os.getenv('SENDPULSE_API_ID')
-SENDPULSE_API_SECRET = os.getenv('SENDPULSE_API_SECRET')
+# Configure SMTP Gmail
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
 
 
 CELERY_BEAT_SCHEDULE = {

@@ -1,33 +1,13 @@
-from django.core.mail.backends.base import BaseEmailBackend
+from django.conf import settings
+from django.core.mail.backends.smtp import EmailBackend as SMTPBackend
 
-from weather.sendpulse import SendPulseClient
 
-
-class SendPulseEmailBackend(BaseEmailBackend):
-    def send_messages(self, email_messages):
-        if not email_messages:
-            return 0
-
-        client = SendPulseClient()
-        sent_count = 0
-
-        for message in email_messages:
-            payload = {
-                'html': message.body.replace('\n', '<br>'),
-                'text': message.body,
-                'subject': message.subject,
-                'from': {
-                    'name': 'Django Weather Reminder',
-                    'email': message.from_email or 'mogaxev854@kudimi.com',
-                },
-                'to': [{'name': addr.split('@')[0], 'email': addr} for addr in message.to],
-            }
-
-            try:
-                result = client.send_email(payload)
-                if result:
-                    sent_count += 1
-            except Exception as e:
-                print(f'SendPulse error: {e}')
-
-        return sent_count
+class GmailSMTPBackend(SMTPBackend):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('host', settings.EMAIL_HOST)
+        kwargs.setdefault('port', settings.EMAIL_PORT)
+        kwargs.setdefault('username', settings.DEFAULT_FROM_EMAIL)
+        kwargs.setdefault('password', settings.EMAIL_HOST_PASSWORD)  # 16-digit app password
+        kwargs.setdefault('use_tls', settings.EMAIL_USE_TLS)
+        kwargs.setdefault('fail_silently', False)
+        super().__init__(*args, **kwargs)
