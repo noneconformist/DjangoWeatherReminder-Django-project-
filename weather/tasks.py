@@ -18,9 +18,17 @@ def send_weather_email(self, subscription_id):
     client = OpenWeatherClient(api_key=settings.OPENWEATHER_API_KEY)
     weather = client.get_weather(subscription.city.city_name)
 
+    user = subscription.user
+    if user.first_name.strip():
+        greeting_name = user.first_name
+    elif user.username.strip():
+        greeting_name = user.username
+    else:
+        greeting_name = 'friend'
+
     subject = f'Weather update for {subscription.city.city_name}'
     message = (
-        f'Hello {subscription.user.full_name},\n\n'
+        f'Hello {greeting_name}!\n\n'
         f'Temperature: {weather["temperature"]}°C\n'
         f'Humidity: {weather["humidity"]}%\n'
         f'Wind: {weather["wind_speed"]} m/s ({weather["wind_direction"]}°)\n'
