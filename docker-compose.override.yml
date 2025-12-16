@@ -3,34 +3,15 @@ services:
     build:
       args:
         ENV: dev
+    volumes:
+      - .:/home/docker_user/app:cached
+      - app-venv:/home/docker_user/app/.venv
     ports:
-      - "8080:8080"
-    command: >
-      sh -c "mkdir -p ${STATIC} &&
-             python3.11 manage.py makemigrations --no-input &&
-             python3.11 manage.py migrate --no-input &&
-             python3.11 manage.py collectstatic --no-input &&
-             gunicorn --bind 0.0.0.0:8080 django_weather_reminder.wsgi:application"
+      - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
     stdin_open: true
     tty: true
 
-  nginx:
-    ports:
-      - "80:80"
 
-  test:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        ENV: dev
-    env_file:
-      - .env
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    command: >
-      sh -c "python3.11 manage.py migrate --no-input &&
-             pytest --disable-warnings --maxfail=1"
+volumes:
+  app-venv:
