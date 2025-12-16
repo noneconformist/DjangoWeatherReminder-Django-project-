@@ -81,25 +81,6 @@ services:
       timeout: 3s
       retries: 5
 
-
-  test:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        ENV: test
-    env_file:
-      - .env
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    command: >
-      sh -c "python3.11 manage.py migrate --no-input &&
-             pytest --disable-warnings --maxfail=1"
-
-
 volumes:
   db_data:
   static_volume:
