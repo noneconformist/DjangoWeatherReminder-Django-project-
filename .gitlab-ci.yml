@@ -10,12 +10,6 @@ stages:
 variables:
   DOCKER_TLS_CERTDIR: ""
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  POSTGRES_DB: docker_db
-  POSTGRES_USER: docker_user
-  POSTGRES_PASSWORD: docker_password
-  POSTGRES_PORT_HOST: 5433
-  STATIC: /home/docker_user/app/staticfiles
-  PG_DATA: /var/lib/postgresql/data
 
 cache:
   paths:
@@ -53,7 +47,9 @@ test:
   stage: test
   script:
     - docker compose up --build -d
-    - docker compose exec app python manage.py migrate --no-input
-    - docker compose exec app pytest --disable-warnings --maxfail=1
-    - docker compose down
+    - until docker compose exec db pg_isready -U docker_user -d docker_db; do echo "Waiting for Postgres..."; sleep 2; done
+    - until docker compose exec redis redis-cli ping | grep PONG; do echo "Waiting for Redis..."; sleep 2; done
+    - docker compose exec -T app python manage.py migrate --no-input
+    - docker compose exec -T app pytest --disable-warnings --maxfail=1
+    - docker compose down --remove-orphans
   allow_failure: false
