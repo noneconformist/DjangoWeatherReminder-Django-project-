@@ -52,5 +52,8 @@ lint:
 test:
   stage: test
   script:
-    - docker compose -f docker-compose.yml up --build --abort-on-container-exit test
+    - docker compose up --build -d
+    - docker compose exec app python manage.py migrate --no-input
+    - docker compose exec app pytest --disable-warnings --maxfail=1
+    - docker compose down
   allow_failure: false
