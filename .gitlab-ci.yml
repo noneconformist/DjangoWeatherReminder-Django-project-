@@ -46,7 +46,7 @@ lint:
 test:
   stage: test
   script:
-    - docker compose up --build -d
+    - docker compose -f docker-compose.yml up --build -d
     - until docker compose exec db pg_isready -U docker_user -d docker_db; do echo "Waiting for Postgres..."; sleep 2; done
     - until docker compose exec redis redis-cli ping | grep PONG; do echo "Waiting for Redis..."; sleep 2; done
     - docker compose exec -T app python manage.py migrate --no-input
