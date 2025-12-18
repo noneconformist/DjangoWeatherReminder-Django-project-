@@ -65,8 +65,9 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+      - ./nginx_conf_dir:/etc/nginx_config
       - static_volume:/usr/share/nginx/html/static
+    command: sh -c "cp /etc/nginx_config/nginx.conf /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
     ports:
       - "8080:80" # Port 8080 on host, 80 inside container
     depends_on:
