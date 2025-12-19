@@ -46,9 +46,9 @@ lint:
 test:
   stage: test
   script:
-  - docker compose -p $CI_PIPELINE_ID up --build -d
-  - docker compose -p $CI_PIPELINE_ID exec app python manage.py migrate --no-input
-  - docker compose -p $CI_PIPELINE_ID exec app pytest --disable-warnings --maxfail=1
-  - docker compose -p $CI_PIPELINE_ID down
+    - docker compose up --build -d
+    - docker compose exec app python manage.py migrate --no-input
+    - docker compose exec app pytest --disable-warnings --maxfail=1
+    - docker compose down
   allow_failure: false
 
