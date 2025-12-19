@@ -3,8 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        ENV: prod
     volumes:
       - static_volume:/usr/share/nginx/html/static
     env_file:
@@ -25,8 +23,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        ENV: prod
     env_file:
       - .env
     depends_on:
@@ -38,8 +34,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        ENV: prod
     env_file:
       - .env
     depends_on:
@@ -65,10 +59,10 @@ services:
   nginx:
     image: nginx:latest
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/usr/share/nginx/html/static
     ports:
-      - "${NGINX_PORT_HOST:-8080}:80" # Port 8080 on host, 80 inside container
+      - "8080:80" # Port 8080 on host, 80 inside container
     depends_on:
       - app
 
@@ -80,6 +74,21 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: >
+      sh -c "python3.11 manage.py migrate --no-input &&
+             pytest --disable-warnings --maxfail=1"
 
 volumes:
   db_data:

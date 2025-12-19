@@ -29,13 +29,7 @@ WORKDIR /home/docker_user/app
 COPY --chown=docker_user:docker_user pyproject.toml uv.lock ./
 
 # Install dependencies using uv
-RUN if [ "$ENV" = "dev" ] || [ "$ENV" = "test" ]; then \
-      echo "Installing development/test dependencies..."; \
-      uv sync --frozen --dev; \
-    else \
-      echo "Installing production dependencies..."; \
-      uv sync --frozen; \
-    fi
+RUN uv sync --frozen --dev;
 
 ENV PATH="/home/docker_user/app/.venv/bin:$PATH"
 
