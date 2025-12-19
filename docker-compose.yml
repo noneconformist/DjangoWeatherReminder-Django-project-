@@ -47,6 +47,8 @@ services:
       - db_data:${PG_DATA}
     env_file:
       - .env
+    ports: []
+      # - ${POSTGRES_PORT_HOST}:5432 #PostgreSQL inside the container will remain on port 5432, but will be accessible on the host via 5433
     healthcheck:  # Adding a status check
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -59,8 +61,8 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
       - static_volume:/usr/share/nginx/html/static
-    ports:
-      - "8080:80" # Port 8080 on host, 80 inside container
+    ports: []
+      # - "8080:80" # Port 8080 on host, 80 inside container
     depends_on:
       - app
 
