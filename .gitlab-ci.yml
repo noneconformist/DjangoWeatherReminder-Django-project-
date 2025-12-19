@@ -51,6 +51,6 @@ test:
     - docker compose -p $CI_PIPELINE_ID run --rm app uv run pytest --disable-warnings --maxfail=1
     - docker compose -p $CI_PIPELINE_ID down
   after_script:
-    - docker network prune -f
+    - - docker network prune -f
   allow_failure: false
 
