@@ -184,3 +184,6 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': crontab(minute='*/10'),  # Checking every 10 minutes
     },
 }
+
+# Swagger configuration
+SWAGGER_USE_COMPAT_RENDERERS = False
