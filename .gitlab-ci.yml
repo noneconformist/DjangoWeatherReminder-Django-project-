@@ -46,7 +46,7 @@ lint:
 test:
   stage: test
   script:
-    - docker compose f docker-compose.yml -p $CI_PIPELINE_ID up --build -d
+    - docker compose -f docker-compose.yml -p $CI_PIPELINE_ID up --build -d
     - docker compose -p $CI_PIPELINE_ID run --rm app uv run python manage.py migrate --no-input
     - docker compose -p $CI_PIPELINE_ID run --rm app uv run pytest --disable-warnings --maxfail=1
     - docker compose -p $CI_PIPELINE_ID down
