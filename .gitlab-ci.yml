@@ -10,12 +10,6 @@ stages:
 variables:
   DOCKER_TLS_CERTDIR: ""
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
-  POSTGRES_DB: docker_db
-  POSTGRES_USER: docker_user
-  POSTGRES_PASSWORD: docker_password
-  POSTGRES_PORT_HOST: 5433
-  STATIC: /home/docker_user/app/staticfiles
-  PG_DATA: /var/lib/postgresql/data
 
 cache:
   paths:
@@ -52,5 +46,11 @@ lint:
 test:
   stage: test
   script:
-    - docker compose -f docker-compose.yml up --build --abort-on-container-exit test
+    - docker compose -p $CI_PIPELINE_ID up --build -d
+    - docker compose -p $CI_PIPELINE_ID run --rm app uv run python manage.py migrate --no-input
+    - docker compose -p $CI_PIPELINE_ID run --rm app uv run pytest --disable-warnings --maxfail=1
+    - docker compose -p $CI_PIPELINE_ID down
+  after_script:
+    - - docker network prune -f
   allow_failure: false
+

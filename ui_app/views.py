@@ -29,7 +29,9 @@ def subscription_add(request):
 
 @login_required
 def subscription_delete(request, subscription_id):
-    subscription = Subscription.objects.filter(id=subscription_id, user=request.user).first()
+    subscription = Subscription.objects.filter(
+        subscription_id=subscription_id, user=request.user
+    ).first()
 
     if request.method == 'POST' and subscription:
         subscription.delete()
