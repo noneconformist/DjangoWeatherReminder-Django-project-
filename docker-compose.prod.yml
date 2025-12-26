@@ -1,0 +1,81 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    volumes:
+      - static_volume:/usr/share/nginx/html/static
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy # Wait until db becomes "healthy"
+      redis:
+        condition: service_healthy
+    command: >
+          sh -c "mkdir -p ${STATIC} &&
+                 python3.11 manage.py makemigrations --no-input &&
+                 python3.11 manage.py migrate --no-input &&
+                 python3.11 manage.py collectstatic --no-input &&
+                 gunicorn --bind 0.0.0.0:8080 django_weather_reminder.wsgi:application"
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+    command: celery -A django_weather_reminder worker -l info
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - db
+    command: celery -A django_weather_reminder beat -l info
+
+  db:
+    image: postgres:15
+    volumes:
+      - db_data:${PG_DATA}
+    env_file:
+      - .env
+    ports:
+       - ${POSTGRES_PORT_HOST}:5432 #PostgreSQL inside the container will remain on port 5432, but will be accessible on the host via 5433
+    healthcheck:  # Adding a status check
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+      - static_volume:/usr/share/nginx/html/static
+    ports:
+       - "8080:80" # Port 8080 on host, 80 inside container
+    depends_on:
+      - app
+
+
+  redis:
+    image: redis:7
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+
+volumes:
+  db_data:
+  static_volume:
